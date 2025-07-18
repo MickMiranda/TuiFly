@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUI Rechner</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2em;
+            background: #f4f4f4;
+        }
+        input, output {
+            font-size: 1.2em;
+            margin: 0.5em 0;
+        }
+        .card {
+            background: white;
+            padding: 1.5em;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 1em auto;
+            width: 50%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .footer {
+            margin-top: 2em;
+            font-size: 0.9em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="tui-logo.png" alt="TUI Logo" class="logo">
+        <h2>TUI Rechner</h2>
+        <label for="b6">Aktueller Kurs Tui:</label><br>
+        <input type="number" id="b6" value="15" step="0.01" /><br>
+
+        <p><strong>Nettoertrag:</strong> <span id="j8">–</span></p>
+        <p><strong>Nettoertrag ohne Aktien:</strong> <span id="j13">–</span></p>
+
+        <div class="footer">by MickMiranda 2025</div>
+    </div>
+
+    <script>
+        const A2 = 2105;
+        const A3 = 500;
+        const A4 = 710;
+        const B2 = 5.1;
+        const B3 = 4.73;
+        const G5 = 10000;
+        const J7 = -15773;
+
+        function formatEuro(value) {
+            return value.toLocaleString('de-DE', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+        }
+
+        function rechne() {
+            const B6 = parseFloat(document.getElementById("b6").value);
+
+            const D2 = (B6 - B2) * A2;
+            const D3 = (B6 - B3) * A3;
+            const D4 = B6 * A4;
+            const D5 = D2 + D3 + D4;
+
+            const F5 = D5 - (A2 * 1.045) - (A3 * 1.526) - (A4 * 7.18);
+            const H5 = F5 - G5;
+            const I5 = Math.max(0, H5 * 0.25);
+            const J5 = D5 - I5;
+
+            const F13 = (D2 + D3) - (A2 * 1.045) - (A3 * 1.526);
+            const H13 = F13 - G5;
+            const J13 = Math.max(0, H13 * 0.75);
+
+            const J8 = J7 + J5;
+
+            document.getElementById("j8").innerText = formatEuro(J8);
+            document.getElementById("j13").innerText = formatEuro(J13);
+        }
+
+        document.getElementById("b6").addEventListener("input", rechne);
+        rechne(); // Initialberechnung
+    </script>
+</body>
+</html>
